@@ -1,0 +1,16 @@
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-item:hover {
+    background-color: #f8f9fa;
+}
+
+.delete-btn {
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+.delete-btn:hover {
+    opacity: 1;
+}
+
