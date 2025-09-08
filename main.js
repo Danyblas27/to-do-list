@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toDoList = new ToDoList(taskManager)
     
     console.log(localStorage.getItem('todoTasks'))
+    
     // Hacer accesibles para debugging o futuras expansiones
     window.todoApp = {
         storage: storageManager,

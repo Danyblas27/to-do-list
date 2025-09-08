@@ -6,7 +6,10 @@ export default class TaskManager {
     
     // Agregar una nueva tarea
     addTask(text) {
-        if (!text.trim()) return false; // no puede estar vacio
+        if (!text.trim()) {
+            alert('Escribe algo antes de agregar una tarea')
+            return false; // no puede estar vacio
+        }
         
         const newTask = {
             id: Date.now(), // les agregué id para poder trabajar mejor cada tarea individualmente

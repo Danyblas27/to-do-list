@@ -24,12 +24,12 @@ export default class ToDoList {
         const newTask = this.taskManager.addTask(taskText)
         
         if (newTask) {
-            this.taskInput.value = ''
+            this.taskInput.value = '' // resetear el input
             this.renderTasks()
         }
     }
     
-    // Eliminar una tarea
+    // Eliminar una tarea y volver a renderizar
     deleteTask(id) {
         this.taskManager.deleteTask(id)
         this.renderTasks()
@@ -51,15 +51,18 @@ export default class ToDoList {
         
         tasks.forEach(task => {
             const taskElement = document.createElement('div')
-            taskElement.className = 'task-item d-flex justify-content-between mt-2'
+            taskElement.className = 'task-item d-flex flex-wrap justify-content-between mt-4 border p-3 rounded'
             taskElement.innerHTML = `
-                <div class="overflow-auto me-2 col-8">
+                <div class="d-flex me-2 col-8" style="overflow-wrap: anywhere">
                     <span>${task.text}</span>
                 </div>
-                <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${task.id}">
-                    Eliminar
-                    <i class="bi bi-trash"></i>
-                </button>`
+                <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${task.id}">
+                        Eliminar
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                `
             
             this.tasksContainer.appendChild(taskElement)
         })
