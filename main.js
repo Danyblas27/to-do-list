@@ -14,5 +14,29 @@ document.addEventListener('DOMContentLoaded', () => {
         storage: storageManager,
         manager: taskManager,
         ui: toDoList
-    };
-});
+    }
+})
+
+
+
+// Offline
+function updateOnlineStatus() {
+    const offlineAlert = document.getElementById('offlineAlert')
+    
+    if (!navigator.onLine) {
+        // Mostrar alerta cuando no hay conexión
+        offlineAlert.classList.remove('d-none')
+    } else {
+        // Ocultar alerta cuando hay conexión
+        offlineAlert.classList.add('d-none')
+    }
+}
+
+// Event listeners para cambios de conexión
+window.addEventListener('online', updateOnlineStatus)
+window.addEventListener('offline', updateOnlineStatus)
+
+// Verificar estado al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    updateOnlineStatus()
+})
