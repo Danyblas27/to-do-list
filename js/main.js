@@ -1,6 +1,6 @@
-import StorageManager from "./storageManager.js"
-import TaskManager from "./taskManager.js"
-import ToDoList from "./toDoList.js"
+import StorageManager from "./classes/storageManager.js"
+import TaskManager from "./classes/taskManager.js"
+import ToDoList from "./classes/toDoList.js"
 
 document.addEventListener('DOMContentLoaded', () => {
     const storageManager = new StorageManager()
@@ -17,7 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
+// Levantar el servidor
 
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker
+        .register("/serviceWorker.js")
+        .then(reg => console.log("Service Worker registrado:", reg))
+        .catch(err => console.error("Error registrando SW:", err))
+    })
+}
 
 // Offline
 function updateOnlineStatus() {

@@ -1,11 +1,16 @@
-const CACHE_NAME = 'todolist-v1';
+const CACHE_NAME = 'todolist-v7'
 const urlsToCache = [
     '/',
     '/index.html',
-    '/styles.css',
-    '/main.js',
+    '/css/styles.css',
+    '/js/main.js',
+    '/js/classes/storageManager.js',
+    '/js/classes/taskManager.js',
+    '/js/classes/toDoList.js',
+    '/icons/web-app-manifest-192x192.png',
+    '/icons/web-app-manifest-512x512.png',
     '/manifest.json'
-];
+]
 
 // Instalación
 self.addEventListener('install', event => {
@@ -18,12 +23,24 @@ self.addEventListener('install', event => {
 })
 
 // Fetch
-self.addEventListener('fetch', event => {
+self.addEventListener("fetch", event => {
     event.respondWith(
-        caches.match(event.request)
-        .then(response => {
-            // Devuelve el recurso del cache o haz la petición
-            return response || fetch(event.request)
+        caches.match(event.request).then(response => {
+        if (response) {
+            return response // servir desde cache
+        }
+        return fetch(event.request).catch(() => {
+            // fallback
+            if (event.request.destination === "document") {
+            return caches.match("/index.html")
+            } else if (event.request.destination === "script") {
+            return new Response("", { status: 200, headers: { "Content-Type": "application/javascript" } })
+            } else if (event.request.destination === "style") {
+            return new Response("", { status: 200, headers: { "Content-Type": "text/css" } })
+            } else {
+            return new Response() // fallback genérico
+            }
+        })
         })
     )
 })
