@@ -4,6 +4,7 @@
     "description": "To-do list que irá creciendo poco a poco",
     "start_url": "/",
     "display": "standalone",
+    "display_override": ["window-controls-overlay", "standalone", "browser"],
     "background_color": "#ffffff",
     "theme_color": "#000000",
     "orientation": "portrait",
@@ -19,6 +20,26 @@
         "sizes": "512x512",
         "type": "image/png",
         "purpose": "any"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/screens/screen1.png",
+            "sizes": "1920x1032",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screens/mobileScreen1.png",
+            "sizes": "502x763",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
+    "protocol_handlers": [
+        {
+            "protocol": "web+todolist",
+            "url": "/todolist?type=%s"
         }
     ]
 }
