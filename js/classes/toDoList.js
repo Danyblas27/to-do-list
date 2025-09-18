@@ -16,23 +16,36 @@ export default class ToDoList {
         this.taskInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.addTask()
         })
+
+        // Eventos para botones de eliminar
+        this.tasksContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.delete-btn')
+            if (btn) {
+                const taskId = parseInt(btn.dataset.id)
+                this.deleteTask(taskId)
+            }
+        });
     }
     
     // Agregar una nueva tarea a la todolist
-    addTask() {
+    async addTask() {
         const taskText = this.taskInput.value
         const newTask = this.taskManager.addTask(taskText)
         
         if (newTask) {
             this.taskInput.value = '' // resetear el input
+            await this.taskManager.syncToServer() // sync al server despues de agregar
+            await this.taskManager.syncFromServer() // obtener actualizaciones del servidor
             this.renderTasks()
         }
     }
     
     // Eliminar una tarea y volver a renderizar
-    deleteTask(id) {
-        this.taskManager.deleteTask(id)
-        this.renderTasks()
+    async deleteTask(id) {
+        await this.taskManager.deleteTask(id)
+        this.renderTasks() // mostrar cambios
+        await this.taskManager.syncToServer() // sync al server despues de eliminar
+        await this.taskManager.syncFromServer()
     }
     
     // Renderizar todas las tareas
@@ -53,8 +66,8 @@ export default class ToDoList {
             const taskElement = document.createElement('div')
             taskElement.className = 'task-item d-flex flex-wrap justify-content-between mt-4 border p-3 rounded'
             taskElement.innerHTML = `
-                <div class="d-flex me-2 col-8" style="overflow-wrap: anywhere">
-                    <span>${task.text}</span>
+                <div class="d-flex me-2 md-col-8 sm-col-6" style="overflow-wrap: anywhere">
+                    <span>${task.task}</span>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
                     <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${task.id}">
@@ -63,17 +76,7 @@ export default class ToDoList {
                     </button>
                 </div>
                 `
-            
             this.tasksContainer.appendChild(taskElement)
-        })
-        
-        // Agregar event listeners a los botones de eliminar
-        const deleteButtons = this.tasksContainer.querySelectorAll('.delete-btn')
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const taskId = parseInt(e.target.closest('.delete-btn').dataset.id)
-                this.deleteTask(taskId)
-            })
         })
     }
 }

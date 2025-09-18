@@ -2,9 +2,11 @@ import StorageManager from "./classes/storageManager.js"
 import TaskManager from "./classes/taskManager.js"
 import ToDoList from "./classes/toDoList.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const storageManager = new StorageManager()
     const taskManager = new TaskManager(storageManager)
+    if (navigator.onLine) await taskManager.syncToServer() 
+    if (navigator.onLine) await taskManager.syncFromServer() 
     const toDoList = new ToDoList(taskManager)
     
     console.log(localStorage.getItem('todoTasks'))
@@ -15,6 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
         manager: taskManager,
         ui: toDoList
     }
+
+    // Sincronizar al reconectar
+    window.addEventListener('online', async () => {
+        await taskManager.syncOnReconnect()
+        toDoList.renderTasks()
+    });
+
+    setInterval(async () => {
+        if (navigator.onLine) {
+            await taskManager.syncFromServer()
+            toDoList.renderTasks()
+        }
+    }, 1000)
 })
 
 // Levantar el servidor
