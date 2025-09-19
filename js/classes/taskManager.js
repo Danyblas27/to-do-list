@@ -51,10 +51,10 @@ export default class TaskManager {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ tasks: this.tasks })
-            });
+            })
         } catch (err) {
             if (navigator.onLine) {
-                console.error('Error sincronizando con el servidor', err);
+                console.error('Error sincronizando con el servidor', err)
             }
         }
     }

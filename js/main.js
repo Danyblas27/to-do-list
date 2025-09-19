@@ -5,7 +5,6 @@ import ToDoList from "./classes/toDoList.js"
 document.addEventListener('DOMContentLoaded', async () => {
     const storageManager = new StorageManager()
     const taskManager = new TaskManager(storageManager)
-    if (navigator.onLine) await taskManager.syncToServer() 
     if (navigator.onLine) await taskManager.syncFromServer() 
     const toDoList = new ToDoList(taskManager)
     
@@ -24,12 +23,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         toDoList.renderTasks()
     });
 
-    setInterval(async () => {
+
+    // por si se quiere hacer sync cada cierto tiempo sin reiniciar
+    /* setInterval(async () => {
         if (navigator.onLine) {
             await taskManager.syncFromServer()
             toDoList.renderTasks()
         }
-    }, 1000)
+    }, 1000) */
 })
 
 // Levantar el servidor

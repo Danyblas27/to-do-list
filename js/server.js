@@ -19,7 +19,7 @@ app.post('/tasks/sync', (req, res) => {
 
     const ids = tasks.map(t => t.id)
 
-    // Delete tasks not present in the incoming array
+    // Borra todo lo que no está en la lista enviada
     const deleteQuery = ids.length > 0
         ? `DELETE FROM tasks WHERE id NOT IN (${ids.map(() => '?').join(',')})`
         : 'DELETE FROM tasks'
